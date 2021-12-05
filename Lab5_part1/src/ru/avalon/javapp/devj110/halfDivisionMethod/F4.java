@@ -9,7 +9,7 @@ package ru.avalon.javapp.devj110.halfDivisionMethod;
  * @author bezdetk0@mail.ru
  */
 public class F4 {
-        double tang(double x) {
+        protected double tang(double x) {
         return Math.tan(x);
         }
     }

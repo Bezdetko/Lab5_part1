@@ -4,7 +4,6 @@
  */
 package ru.avalon.javapp.devj110.halfDivisionMethod;
 
-import java.math.MathContext;
 
 /**
  *
@@ -20,7 +19,7 @@ private static final double EPS = 1e-5;
         // TODO code application logic here
         
     Function f1 = new F1();    // вложенный класс
-    System.out.println(RootHDM.rootHDM(f1, 0.01, 2, EPS));    
+    System.out.println(rootHDM(f1, 0.01, 2, EPS));    
     
     
     Function f2 = new Function() { // анонимный класс
@@ -28,24 +27,39 @@ private static final double EPS = 1e-5;
         return Math.sin(x) - 0.75;
     }       
     };
-    System.out.println(RootHDM.rootHDM(f2, 2, 3, EPS));
+    System.out.println(rootHDM(f2, 2, 3, EPS));
     
-    Function f3 = RootHDM::Static;      // статический метод
-    System.out.println(RootHDM.rootHDM(f3, 1, 3, EPS));
+    Function f3 = Function::staticMeth;      // статический метод
+    System.out.println(rootHDM(f3, 1, 3, EPS));
         
     F4 func4 = new F4();    // ссылка на метод экземпляра
     Function f4 = func4::tang; // ссылка на метод экземпляра
-    System.out.println(RootHDM.rootHDM(f4, 2, 4, EPS));
+    System.out.println(rootHDM(f4, 2, 4, EPS));
     
     
     Function f5 = x -> x*x*x - 8*x + 2; // лямбда выражение
-        System.out.println(RootHDM.rootHDM(f5, 1, 5, EPS));
+        System.out.println(rootHDM(f5, 1, 5, EPS));
     
     }
     
-    
-    
-   
+        public static double rootHDM (Function function, double left, double right, double eps) {
+        double x = 0; 
+          if (function.f(left) * function.f(right) < 0){ //проверка условия на сходимость
+          for (int i=0; ;i++){  
+              x =(left+right)/2;
+              if (Math.abs(function.f(x)) < eps) {  // проверка на точность
+                  break;}
+                  else {
+                          if (function.f(left)*function.f(x)<0)
+                              right = x;
+                          else 
+                              left = x;                   
+                  }                                  
+              }
+          }        
+        return x;
+    } 
+        
     
         private static class F1 implements Function { // вложенный класс
         @Override
